@@ -1,0 +1,63 @@
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const DATA_DIR = path.join(__dirname, 'data');
+const MENU_FILE = path.join(DATA_DIR, 'menu.json');
+const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
+
+// Ensure data directory exists
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+// Initialize files if missing
+if (!fs.existsSync(MENU_FILE)) fs.writeFileSync(MENU_FILE, JSON.stringify([], null, 2));
+if (!fs.existsSync(ORDERS_FILE)) fs.writeFileSync(ORDERS_FILE, JSON.stringify([], null, 2));
+
+function readJson(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (e) {
+    return [];
+  }
+}
+
+function writeJson(file, data) {
+  fs.writeFileSync(file, JSON.stringify(data, null, 2));
+}
+
+app.get('/menu', (req, res) => {
+  const menu = readJson(MENU_FILE);
+  res.json(menu);
+});
+
+app.get('/orders', (req, res) => {
+  const orders = readJson(ORDERS_FILE);
+  res.json(orders);
+});
+
+app.post('/order', (req, res) => {
+  const { customer = 'Guest', items = [], total = 0 } = req.body;
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: 'Order must include at least one item' });
+  }
+  const orders = readJson(ORDERS_FILE);
+  const id = Date.now();
+  const order = { id, customer, items, total, createdAt: new Date().toISOString() };
+  orders.unshift(order);
+  writeJson(ORDERS_FILE, orders);
+  res.json({ ok: true, order });
+});
+
+// Serve client static files from /client
+const clientPath = path.join(__dirname, '..', 'client');
+if (fs.existsSync(clientPath)) {
+  app.use(express.static(clientPath));
+}
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

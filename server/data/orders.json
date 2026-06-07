@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1780812757927,
+    "customer": "kn",
+    "items": [
+      {
+        "id": 4,
+        "name": "French Fries",
+        "price": 3.5,
+        "description": "Crispy salted fries",
+        "qty": 1
+      }
+    ],
+    "total": 3.5,
+    "createdAt": "2026-06-07T06:12:37.927Z"
+  },
+  {
+    "id": 1780812747366,
+    "customer": "ugu",
+    "items": [
+      {
+        "id": 1,
+        "name": "Margherita Pizza",
+        "price": 8.99,
+        "description": "Classic cheese & tomato",
+        "qty": 1
+      }
+    ],
+    "total": 8.99,
+    "createdAt": "2026-06-07T06:12:27.366Z"
+  }
+]

@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Margherita Pizza", "price": 8.99, "description": "Classic cheese & tomato" },
+  { "id": 2, "name": "Veggie Burger", "price": 7.49, "description": "Grilled patty with salad" },
+  { "id": 3, "name": "Caesar Salad", "price": 6.5, "description": "Crisp lettuce with dressing" },
+  { "id": 4, "name": "French Fries", "price": 3.5, "description": "Crispy salted fries" }
+]
