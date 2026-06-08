@@ -8,11 +8,11 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch('/menu')
+    fetch('/api/menu')
       .then(res => res.json())
       .then(setMenu)
       .catch(() => setMenu([]));
-    fetch('/orders')
+    fetch('/api/orders')
       .then(r => r.json())
       .then(setOrders)
       .catch(() => setOrders([]));
@@ -38,7 +38,7 @@ function App() {
     if (cart.length === 0) return alert('Cart is empty');
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     setLoading(true);
-    fetch('/order', {
+    fetch('/api/order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ customer: name || 'Guest', items: cart, total })
@@ -62,7 +62,7 @@ function App() {
     <div className="app">
       <header>
         <h1>Kuborder</h1>
-        <p>Simple food ordering demo</p>
+        <p>Simple food ordering demo bhai dekh zraa kya krrrrreeee hai hummmmmm</p>
       </header>
 
       <main>

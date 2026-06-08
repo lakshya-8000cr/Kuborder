@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: kuborder-backend
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: kuborder-backend
+
+  template:
+    metadata:
+      labels:
+        app: kuborder-backend
+
+    spec:
+      containers:
+      - name: backend
+        image: kuborder-backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000

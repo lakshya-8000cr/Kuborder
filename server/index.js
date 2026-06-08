@@ -30,17 +30,17 @@ function writeJson(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
-app.get('/menu', (req, res) => {
+app.get('/api/menu', (req, res) => {
   const menu = readJson(MENU_FILE);
   res.json(menu);
 });
 
-app.get('/orders', (req, res) => {
+app.get('/api/orders', (req, res) => {
   const orders = readJson(ORDERS_FILE);
   res.json(orders);
 });
 
-app.post('/order', (req, res) => {
+app.post('/api/order', (req, res) => {
   const { customer = 'Guest', items = [], total = 0 } = req.body;
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: 'Order must include at least one item' });
@@ -60,4 +60,11 @@ if (fs.existsSync(clientPath)) {
 }
 
 const PORT = process.env.PORT || 3000;
+app.get("/api/server", (req,res)=>{
+    res.json({
+        version: "v2",
+        hostname: require("os").hostname(),
+        time: new Date()
+    })
+})
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

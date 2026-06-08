@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: kuborder-ingress
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+  - host: kuborder.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kuborder-frontend
+            port:
+              number: 80
+
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: kuborder-backend
+            port:
+              number: 3000

@@ -1,0 +1,382 @@
+# Kubernetes Journey (Lakshya)
+
+## 1. Setup
+
+### Docker Check
+
+```powershell
+docker --version
+docker ps
+```
+
+### Kubectl Check
+
+```powershell
+kubectl version --client
+```
+
+### Minikube Start
+
+```powershell
+minikube start
+```
+
+### Verify Cluster
+
+```powershell
+kubectl get nodes
+```
+
+---
+
+# 2. First Deployment (Nginx)
+
+### Create Deployment
+
+```powershell
+kubectl create deployment my-ngnix --image=nginx
+```
+
+### Check Deployment
+
+```powershell
+kubectl get deployments
+```
+
+### Check Pods
+
+```powershell
+kubectl get pods
+```
+
+### Describe Pod
+
+```powershell
+kubectl describe pod <pod-name>
+```
+
+### Logs
+
+```powershell
+kubectl logs <pod-name>
+```
+
+---
+
+# 3. Self Healing
+
+Delete Pod
+
+```powershell
+kubectl delete pod <pod-name>
+```
+
+Watch
+
+```powershell
+kubectl get pods -w
+```
+
+Kubernetes automatically creates a new pod.
+
+---
+
+# 4. ReplicaSets & Scaling
+
+Check ReplicaSets
+
+```powershell
+kubectl get rs
+```
+
+Scale Deployment
+
+```powershell
+kubectl scale deployment my-ngnix --replicas=3
+```
+
+Check
+
+```powershell
+kubectl get pods
+kubectl get deployments
+```
+
+---
+
+# 5. Service
+
+Expose Deployment
+
+```powershell
+kubectl expose deployment my-ngnix --port=80 --type=NodePort
+```
+
+Check Service
+
+```powershell
+kubectl get svc
+```
+
+Check Endpoints
+
+```powershell
+kubectl get endpoints my-ngnix
+```
+
+Open Service
+
+```powershell
+minikube service my-ngnix
+```
+
+---
+
+# 6. Backend Docker
+
+Build
+
+```powershell
+docker build -t kuborder-backend:latest ./server
+```
+
+Run Locally
+
+```powershell
+docker run -p 3000:3000 kuborder-backend:latest
+```
+
+---
+
+# 7. Backend Kubernetes
+
+Load Image
+
+```powershell
+minikube image load kuborder-backend:latest
+```
+
+Deploy
+
+```powershell
+kubectl apply -f k8s/backend-deployment.yaml
+```
+
+Check
+
+```powershell
+kubectl get deployments
+kubectl get pods
+```
+
+Logs
+
+```powershell
+kubectl logs <pod-name>
+```
+
+Expose Service
+
+```powershell
+kubectl expose deployment kuborder-backend --port=3000 --target-port=3000 --type=NodePort
+```
+
+---
+
+# 8. Frontend Docker
+
+Build
+
+```powershell
+docker build -t kuborder-frontend:latest ./client
+```
+
+Load
+
+```powershell
+minikube image load kuborder-frontend:latest
+```
+
+Deploy
+
+```powershell
+kubectl apply -f k8s/frontend-deployment.yaml
+```
+
+Expose
+
+```powershell
+kubectl expose deployment kuborder-frontend --port=80 --target-port=80 --type=NodePort
+```
+
+---
+
+# 9. Updating Code
+
+## Same Tag (latest)
+
+```powershell
+docker build -t kuborder-backend:latest ./server
+
+minikube image load kuborder-backend:latest
+
+kubectl rollout restart deployment/kuborder-backend
+```
+
+Frontend
+
+```powershell
+docker build -t kuborder-frontend:latest ./client
+
+minikube image load kuborder-frontend:latest
+
+kubectl rollout restart deployment/kuborder-frontend
+```
+
+---
+
+# 10. Rolling Update
+
+Check Status
+
+```powershell
+kubectl rollout status deployment/kuborder-backend
+```
+
+Watch Pods
+
+```powershell
+kubectl get pods -w
+```
+
+---
+
+# 11. Rollback
+
+History
+
+```powershell
+kubectl rollout history deployment/kuborder-backend
+```
+
+Rollback
+
+```powershell
+kubectl rollout undo deployment/kuborder-backend
+```
+
+---
+
+# 12. Ingress
+
+Enable
+
+```powershell
+minikube addons enable ingress
+```
+
+Check
+
+```powershell
+kubectl get pods -n ingress-nginx
+```
+
+Apply
+
+```powershell
+kubectl apply -f k8s/ingress.yaml
+```
+
+Check
+
+```powershell
+kubectl get ingress
+```
+
+Hosts File
+
+```text
+127.0.0.1 kuborder.local
+```
+
+Tunnel
+
+```powershell
+minikube tunnel
+```
+
+Access
+
+```text
+http://kuborder.local
+```
+
+Backend
+
+```text
+http://kuborder.local/api/orders
+```
+
+---
+
+# 13. Load Balancing
+
+Scale Backend
+
+```powershell
+kubectl scale deployment kuborder-backend --replicas=3
+```
+
+Check
+
+```powershell
+kubectl get pods
+```
+
+Test
+
+```powershell
+curl http://kuborder.local/api/server
+```
+
+Output
+
+```json
+{
+  "hostname":"pod-1"
+}
+```
+
+Different hostname = different pod handled request.
+
+---
+
+# Architecture
+
+Browser
+↓
+kuborder.local
+↓
+Ingress (Nginx)
+↓
+Service
+↓
+Pod A
+Pod B
+Pod C
+
+Service performs load balancing across healthy pods.
+
+---
+
+# Next
+
+GitHub Actions
+↓
+GHCR (Container Registry)
+↓
+Automatic Image Build
+↓
+Automatic Deployment
+↓
+Prometheus + Grafana

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: kuborder-frontend
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: kuborder-frontend
+
+  template:
+    metadata:
+      labels:
+        app: kuborder-frontend
+
+    spec:
+      containers:
+      - name: frontend
+        image: kuborder-frontend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
