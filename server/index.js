@@ -59,14 +59,12 @@ if (fs.existsSync(clientPath)) {
   app.use(express.static(clientPath));
 }
 
-app.get("/cpu", (req,res)=>{
-    let sum = 0;
-
-    for(let i=0;i<1000000000;i++){
-        sum += i;
-    }
-
-    res.send("done");
+app.get("/api/cpu", (req, res) => {
+  let sum = 0;
+  for (let i = 0; i < 1000000000; i++) {
+    sum += i;
+  }
+  res.send("CPU load done");
 });
 
 const PORT = process.env.PORT || 3000;
