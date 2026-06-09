@@ -75,4 +75,12 @@ app.get("/api/server", (req,res)=>{
         time: new Date()
     })
 })
+
+app.get("/api/config", (req,res)=>{
+    res.json({
+        app: process.env.APP_NAME,
+        env: process.env.ENVIRONMENT,
+        version: process.env.APP_VERSION
+    });
+});
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
