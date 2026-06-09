@@ -83,4 +83,10 @@ app.get("/api/config", (req,res)=>{
         version: process.env.APP_VERSION
     });
 });
+
+app.get("/api/secret", (req,res)=>{
+    res.json({
+        secret: process.env.JWT_SECRET
+    })
+})
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

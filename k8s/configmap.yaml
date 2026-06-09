@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: app-config
+
+data:
+  APP_NAME: "Kuborder"
+  ENVIRONMENT: "development"
+  APP_VERSION: "v2"
+#confign map -> env variable but which are not crucials like port number wagera
+#secret - > whihch are crucial like apikey , mongodb etc ,sen1sitive 
