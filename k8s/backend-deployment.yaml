@@ -27,7 +27,7 @@ spec:
             name: app-config
         
         env:
-         - name: ORDDERS_FILE
+         - name: ORDERS_FILE
            value: /app/persistent/orders.json
 
         ports:
