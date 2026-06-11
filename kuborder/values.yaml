@@ -1,0 +1,22 @@
+backend:
+  name: kuborder-backend
+  replicas: 1
+  image:
+    repository: ghcr.io/lakshya-8000cr/kuborder-backend
+    tag: latest
+    pullPolicy: Always
+  port: 3000
+
+frontend:
+  name: kuborder-frontend
+  replicas: 1
+  image:
+    repository: ghcr.io/lakshya-8000cr/kuborder-frontend
+    tag: latest
+    pullPolicy: Always
+  port: 80
+
+config:
+  APP_NAME: Kuborder
+  ENVIRONMENT: development
+  APP_VERSION: v1

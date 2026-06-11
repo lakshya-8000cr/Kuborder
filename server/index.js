@@ -7,9 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const DATA_DIR = path.join(__dirname, 'data');
-const MENU_FILE = path.join(DATA_DIR, 'menu.json');
-const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
+const MENU_FILE = path.join(__dirname, 'data', 'menu.json');
+
+const ORDERS_FILE = process.env.ORDERS_FILE || path.join(__dirname, 'data', 'orders.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -87,6 +87,6 @@ app.get("/api/config", (req,res)=>{
 app.get("/api/secret", (req,res)=>{
     res.json({
         secret: process.env.JWT_SECRET
-    })
-})
+    });
+});
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

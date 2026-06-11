@@ -25,16 +25,17 @@ spec:
         envFrom:
         - configMapRef:
             name: app-config
+        
+        env:
+         - name: ORDDERS_FILE
+           value: /app/persistent/orders.json
 
         ports:
         - containerPort: 3000
-        
-        env:
-        - name: JWT_SECRET
-          valueFrom:
-             secretKeyRef:
-               name: app-secret
-               key: JWT_SECRET
+
+        volumeMounts:
+        - name: kuborder-data
+          mountPath: /app/persistent
 
         resources:
           requests:
@@ -43,3 +44,8 @@ spec:
           limits:
             cpu: "500m"
             memory: "512Mi"
+
+      volumes:
+      - name: kuborder-data
+        persistentVolumeClaim:
+          claimName: kuborder-data-pvc
