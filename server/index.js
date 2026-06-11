@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const DATA_DIR = path.join(__dirname, 'data');
 const MENU_FILE = path.join(__dirname, 'data', 'menu.json');
 
 const ORDERS_FILE = process.env.ORDERS_FILE || path.join(__dirname, 'data', 'orders.json');
