@@ -1,5 +1,7 @@
 # Kuborder — Simple Food Ordering (React + Node)
 
+This is a practice repo for understandig of k8s and docker with github actions .
+
 This is a minimal full-stack food-ordering demo using React (JavaScript) for frontend and Node.js + Express for backend.
 
 Features
