@@ -1,6 +1,6 @@
 backend:
   name: kuborder-backend
-  replicas: 1
+  replicas: 0
   image:
     repository: ghcr.io/lakshya-8000cr/kuborder-backend
     tag: latest
@@ -9,9 +9,9 @@ backend:
 
 frontend:
   name: kuborder-frontend
-  replicas: 1
+  replicas: 0
   image:
-    repository: ghcr.io/lakshya-8000cr/kuborder-frontend
+    repository: 1
     tag: latest
     pullPolicy: Always
   port: 80
